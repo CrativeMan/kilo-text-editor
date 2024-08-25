@@ -1,0 +1,7 @@
+# Compiled object files
+*.o
+
+# Executable files
+kilo
+.direnv/
+.idea/
