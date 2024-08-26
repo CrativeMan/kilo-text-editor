@@ -17,8 +17,11 @@
 #define KILO_VERSION "0.0.1"
 #define KILO_TAB_STOP 8
 
+// this makro turns any key into a CTRL-key
 #define CTRL_KEY(k) ((k) & 0x1f)
 
+// this enums starts at 1000 and goes up by 1 every new entry so
+// 1000, 1001, 1002, 1003, ...
 enum editorKey {
   ARROW_LEFT = 1000,
   ARROW_RIGHT,
@@ -32,17 +35,17 @@ enum editorKey {
 };
 
 /* Data */
-typedef struct erow {
+typedef struct erow { // editor row structk
   int size;
   int rsize;
   char *chars;
-  char *render;
+  char *render; // what is actually showed in the editor
 } erow;
 
 struct editorConfig {
-  int cx, cy;
-  int rx;
-  int rowoff;
+  int cx, cy; // cursor position in the buffer
+  int rx;     // cursor x in the rendered text
+  int rowoff; // scroll offset
   int coloff;
   int screenrows;
   int screencols;
@@ -56,10 +59,10 @@ struct editorConfig {
 
 /* Terminal */
 void die(const char *s) {
-  write(STDOUT_FILENO, "\x1b[2j", 4);
-  write(STDOUT_FILENO, "\x1b[H", 3);
-
-  perror(s);
+  write(STDOUT_FILENO, "\x1b[2j", 4); // write call to clear the screen
+  write(STDOUT_FILENO, "\x1b[H", 3);  // write call to move the cursor
+                                      // to top left
+  perror(s); // print error in error constant and before that our custom char *s
   exit(1);
 }
 
@@ -92,7 +95,7 @@ int editorReadKey(void) {
   int nread;
   char c;
 
-  while ((nread = read(STDIN_FILENO, &c, 1)) != 1) {
+  while ((nread = read(STDIN_FILENO, &c, 1)) != 1) { // read on key
     if (nread == -1 && errno != EAGAIN)
       die("read");
   }
