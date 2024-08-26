@@ -1,5 +1,5 @@
 CC = cc
-CFLAGS = -Wall -Wextra -g -pedantic -std=c99 -Wno-unused-result
+CFLAGS = -Wall -Wextra -g -std=c99 -Wno-unused-result
 SRCS = *.c
 OBJS = *.o
 TARGET = kilo
